@@ -74,26 +74,26 @@ const Payment = () => {
     }
 
     const options = {
-      key: import.meta.env.VITE_RAZORPAY_KEY, // ✅ Uses frontend-safe key
+      key: import.meta.env.VITE_RAZORPAY_KEY,
       amount: order.amount,
       currency: order.currency,
-      order_id: order.order_id,
+      order_id: order.id, // ✅ FIXED THIS LINE
       handler: function (response) {
         console.log("Payment Successful:", response);
-        confirmPayment(); // Navigate to paid content after successful payment
+        confirmPayment();
       },
       modal: {
         ondismiss: () => {
-          // This function is called when the user closes the Razorpay modal
           const alertMessage =
             language === "Hindi"
               ? "चिंता न करें, भुगतान की आवश्यकता नहीं है। यह डेवलपर्स के कौशल को दिखाने के लिए था। अब आप आगे बढ़ सकते हैं।"
               : "Don't worry, no payment is needed. This was to showcase the developer's skills. You can move on now and can still enjoy netflix.";
           alert(alertMessage);
-          setShowNextButton(true); // Show the "Next" button after the alert
+          setShowNextButton(true);
         },
       },
     };
+    
 
     const rzp = new window.Razorpay(options);
     rzp.open();
